@@ -1,65 +1,121 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boutique Vania Bortolli-Loja</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            text-align: center;
-        }
-        .container {
-            width: 90%;
-            max-width: 700px; 
-            margin: 0 auto; /* Centraliza */
-            background: rgb(221, 125, 125);    
-         }   
-        
-        .menu {
-            display: block;
-            text-align: center;
-            background: rgb(243, 158, 158);
-            padding: 10px;
-        }
-        .menu a {
-            color: rgb(255, 255, 255);           
-            padding: 10px;
-            display: inline-block;
-        }
-        /* Estilos para telas menores que 768px */
-        @media screen and (max-width: 768px) {
-            body {
-                background-color: rgb(170, 160, 160);
-            }
-        }
-       
-        
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Boutique Vania Bortolli</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="menu">
-        <a href="#">Início</a>
-        <a href="#">Sobre</a>
-        <a href="#">Contato</a>
+<body class="bg-pink-50 text-gray-800">
+
+  <!-- Cabeçalho -->
+  <header class="bg-white shadow-md p-4 flex justify-between items-center relative">
+    <h1 class="text-2xl font-bold text-pink-600">Boutique Vania Bortolli</h1>
+
+    <!-- Menu desktop -->
+    <nav class="hidden md:flex gap-6">
+      <a href="#" class="hover:text-pink-600">Início</a>
+      <a href="#" class="hover:text-pink-600">Coleção</a>
+      <a href="#" class="hover:text-pink-600">Contato</a>
+    </nav>
+
+    <!-- Botão hambúrguer para mobile -->
+    <button id="menu-toggle" class="md:hidden text-2xl ml-4">☰</button>
+
+    <!-- Ações do usuário -->
+    <div class="flex gap-3 items-center">
+      <div id="user-info" class="hidden text-sm font-semibold"></div>
+      <button id="login-btn" onclick="showAuthModal()" class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm">Entrar</button>
+      <button onclick="toggleCart()" class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm">
+        🛍️ Carrinho (<span id="cart-count">0</span>)
+      </button>
     </div>
-    <div class="container">
-        <h1 style="color: rgb(255, 255, 255);">Boutique Vania Bortolli</h1>
-        <p style="font-family: Arial, Helvetica, sans-serif;">Conheça nossas roupas femininas</p>
+
+    <!-- Menu Mobile -->
+    <nav id="mobile-menu" class="md:hidden hidden flex-col gap-4 absolute top-16 left-0 w-full bg-white p-4 shadow-md z-10">
+      <a href="#" class="hover:text-pink-600">Início</a>
+      <a href="#" class="hover:text-pink-600">Coleção</a>
+      <a href="#" class="hover:text-pink-600">Contato</a>
+    </nav>
+
+    <!-- Carrinho -->
+    <div id="cart" class="absolute right-4 top-20 bg-white p-4 shadow-md rounded-md w-72 hidden z-20">
+      <h3 class="text-lg font-bold mb-2">Seu Carrinho</h3>
+      <ul id="cart-items" class="space-y-2 max-h-60 overflow-y-auto"></ul>
+      <p class="mt-4 font-semibold">Total: R$ <span id="cart-total">0.00</span></p>
+      <button onclick="clearCart()" class="mt-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm">Limpar Carrinho</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-pink-100 text-center p-10">
+    <h2 class="text-3xl font-semibold mb-4">Nova Coleção de Inverno 2025</h2>
+    <p class="text-lg mb-6">Estilo, conforto e elegância para você brilhar.</p>
+    <a href="#" class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-lg text-lg">Ver Coleção</a>
+  </section>
+
+  <!-- Produtos -->
+  <section class="p-10">
+    <h3 class="text-2xl font-bold mb-6 text-center">Destaques</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+        <img src="./roupas/peça1.jpeg" alt="Vestido Floral" class="w-full h-64 object-cover rounded-md mb-4" />
+        <h4 class="text-lg font-semibold">Vestido Floral</h4>
+        <p class="price text-pink-600 font-bold">R$ 129.90</p>
+        <button onclick="addToCart('Vestido Floral', 129.90)" class="mt-2 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm">Adicionar</button>
+      </div>
+
+      <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+        <img src="./roupas/peça2.jpeg" alt="Blusa Cropped" class="w-full h-64 object-cover rounded-md mb-4" />
+        <h4 class="text-lg font-semibold">Blusa Cropped</h4>
+        <p class="price text-pink-600 font-bold">R$ 89.90</p>
+        <button onclick="addToCart('Blusa Cropped', 89.90)" class="mt-2 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm">Adicionar</button>
+      </div>
+
+      <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+        <img src="./roupas/peça3.jpeg" alt="Saia Jeans" class="w-full h-64 object-cover rounded-md mb-4" />
+        <h4 class="text-lg font-semibold">Saia Jeans</h4>
+        <p class="price text-pink-600 font-bold">R$ 109.90</p>
+        <button onclick="addToCart('Saia Jeans', 109.90)" class="mt-2 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm">Adicionar</button>
+      </div>
+
+      <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+        <img src="./roupas/peça4.jpeg" alt="Macacão Elegante" class="w-full h-64 object-cover rounded-md mb-4" />
+        <h4 class="text-lg font-semibold">Macacão Elegante</h4>
+        <p class="price text-pink-600 font-bold">R$ 189.90</p>
+        <button onclick="addToCart('Macacão Elegante', 189.90)" class="mt-2 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm">Adicionar</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer class="bg-white text-center p-4 mt-10 shadow-inner">
+    © 2025 BoutiqueVaniaBortolli. Todos os direitos reservados.
+  </footer>
+
+  <!-- Modal de Autenticação -->
+  <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-sm">
+      <h2 id="auth-title" class="text-xl font-semibold mb-4">Entrar</h2>
+      <input id="auth-username" type="text" placeholder="Usuário" class="w-full p-2 mb-3 border rounded" />
+      <input id="auth-password" type="password" placeholder="Senha" class="w-full p-2 mb-4 border rounded" />
+      <button onclick="submitAuth()" class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg w-full mb-2">Confirmar</button>
+      <p class="text-sm text-center text-gray-600">
+        <span id="toggle-auth-mode" class="text-pink-600 hover:underline cursor-pointer">Criar uma conta</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Toggle menu mobile
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+  </script>
 </body>
 </html>
-    </div>
-    <div class="roupas">
-        <h2 style="">Roupas Femininas</h2>
-        
-
-    </div>
-    <div roupasimg>
-        <img src="./roupas/roupas.jpg" alt="roupa1" width="500" height="500" align="center">
-      
-    </div>
-
-
-</body>
